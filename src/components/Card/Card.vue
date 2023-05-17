@@ -7,11 +7,11 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { ICard } from "../../interface";
+import { ICard } from "../../interface/Card.ts";
 
 @Component
 export default class Card extends Vue {
-  @Prop() card: { type: ICard };
+  @Prop() cardItem:  Array<ICard>();
   @Prop() index: number;
   flipCardEmit() {
     this.$emit("flip", this.index);

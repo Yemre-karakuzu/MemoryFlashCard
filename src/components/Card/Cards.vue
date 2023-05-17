@@ -8,11 +8,8 @@
         class="card"
         @click="flipCard(index)"
       >
-        <Card :card="card" :index="index" @flip="flipCard($event)" />
+        <Card :cardItem="card" :index="index" @flip="flipCard($event)" />
       </div>
-    </div>
-    <div class="btn-group">
-      <button @click="backToNewGame">Back</button>
     </div>
   </div>
 </template>
@@ -20,27 +17,25 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Card from "./Card";
-import { ICard } from "../../interface/Card.s";
+import { ICard } from "../../interface/Card.js";
 
 @Component({
   name: "game",
   components: {
     Card,
   },
-  data() {
-    return {
-      cardCount: 0 as number,
-      cards: [] as ICard[],
-      flippedCards: [] as ICard,
-      score: 0 as number,
-    };
-  },
   created() {
-    this.cardCount = localStorage.getItem("level") | 0;
+    this.cardCount = parseInt(localStorage.getItem("level"));
     this.randomDiziOlustur();
   },
-  methods: {
-    randomDiziOlustur(): ICard {
+})
+export default class Cards extends Vue {
+    cardCount= 0 as number,
+    cards= [] as Array<ICard>(),
+    flippedCards= [] as Array<ICard>(),
+    score= "0" as string,
+    
+    randomDiziOlustur() : void {
       // 1'den cardCount/2'e kadar olan sayıları 2 kez diziye ekliyoruz
       for (let i = 1; i <= this.cardCount / 2; i++) {
         this.cards.push({ value: i, isMatch: false, isFlipped: false });
@@ -54,7 +49,7 @@ import { ICard } from "../../interface/Card.s";
         this.cards[j] = temp;
       }
     },
-    flipCard(index: number) : {
+    flipCard(index: number) {
       const card: ICard = this.cards[index];
 
       // Zaten döndürülmüş kartı tekrar döndürmeyi engelle
@@ -72,24 +67,19 @@ import { ICard } from "../../interface/Card.s";
           if (card1.value === card2.value) {
             card1.isMatch = true;
             card2.isMatch = true;
-            this.score += 10;
+            this.score =(parseInt(this.score)+10).toString();
             localStorage.setItem("score", this.score);
           } else {
-            this.score--;
+            this.score =(parseInt(this.score)-1).toString();
             localStorage.setItem("score", this.score);
             card1.isFlipped = false;
             card2.isFlipped = false;
           }
-           this.flippedCards = [];
-        }, 1000);
+          this.flippedCards = [];
+        }, 500);
       }
     },
-    backToNewGame() {
-      this.$router.push("/");
-    },
-  },
-})
-export default class Cards extends Vue {}
+}
 </script>
 <style>
 .game-board {
