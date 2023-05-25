@@ -1,6 +1,6 @@
 <template>
   <div class="game-board">
-    <Score :score.sync="score" />
+    <Score v-model="score" />
     <div class="game-board-wrapper">
       <div v-for="(card, index) in cards" :key="index" class="card" @click="flipCard(index)">
         <Card :cardItem="card" :index="index" />
