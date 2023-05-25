@@ -1,7 +1,7 @@
 <template>
   <div>
-    {{ score }}
-    <button :disabled='score===0' @click="$emit('update:score', 0)" >Reset</button>
+    {{ Score }}
+    <button :disabled='value===0' @click="clearScore" >Reset</button>
   </div>
 </template>
 
@@ -12,5 +12,13 @@ import { Component,Prop,Vue } from "vue-property-decorator";
 export default class Score extends Vue {
   @Prop()
   value!: number;
+  
+  clearScore(){
+    this.value=0
+    localStorage.setItem("score","0")
+  }
+  get Score(){
+    return this.value
+  }
 }
 </script>

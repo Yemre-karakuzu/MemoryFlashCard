@@ -6,6 +6,7 @@
         <Card :cardItem="card" :index="index" />
       </div>
     </div>
+    <button @click="resetGame">Reset Game</button>
   </div>
 </template>
 
@@ -69,6 +70,10 @@ export default class Cards extends Vue {
         this.flippedCards = [];
       }, 300);
     }
+  }
+  resetGame(){
+    this.cards=[]
+    this.shuffleArray();
   }
 }
 </script>
